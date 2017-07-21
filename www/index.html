@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <style type="text/css">
+        body {
+            background-image: url("./bg.jpg");
+        }
+
+        .square_btn {
+            position: relative;
+            display: inline-block;
+            padding: 0.25em 3.5em;
+            text-decoration: none;
+            color: #FFF;
+            background: #fd9535;
+            border-radius: 10px;
+            box-shadow: inset 0 2px 0 rgba(255,255,255,0.2), inset 0 -2px 0 rgba(0, 0, 0, 0.05);
+            font-weight: bold;
+            font-size: x-large;
+            border: solid 8px #d27d00;
+            cursor: pointer;
+        }
+        .square_btn2 {
+            position: relative;
+            display: inline-block;
+            padding: 0.25em 3.2em;
+            text-decoration: none;
+            color: #FFF;
+            background:#3366CC;
+            border-radius: 10px;
+            box-shadow: inset 0 2px 0 rgba(255,255,255,0.2), inset 0 -2px 0 rgba(0, 0, 0, 0.05);
+            font-weight: bold;
+            font-size: x-large;
+            border: solid 8px #003366;
+            cursor: pointer;
+        }
+
+            .square_btn:active {
+                box-shadow: 0 0 2px rgba(0, 0, 0, 0.30);
+            }
+
+        .wrapper {
+            position: relative;
+            height: 450px;
+        }
+
+        .inside {
+            position: absolute;
+            top: 70%;
+            left: 50%;
+            -webkit-transform: translate(-50%,-50%);
+            -ms-transform: translate(-50%,-50%);
+            transform: translate(-50%,-50%);
+            background-color: rgba(255,255,255,0.5);
+            width: 350px;
+            height: 650px;
+            border-radius: 10px;
+        }
+
+        .title {
+            color: darkslategray;
+            font-size: 27px;
+        }
+    </style>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>ゴキ速！</title>
+</head>
+<body align="center">
+    <div id="result" class="alert"></div>
+    <div class="wrapper">
+        <div class="inside" id="main">
+            <h1 class="title">
+                ゴキ速！</br>～ゴキブリ共有アプリ～
+            </h1>
+            <img src="./goki.png" /></br>
+            <a class="square_btn" id="gokiButton">出たぁ</a>
+            <br /><br />
+            <a class="square_btn2" id="mapButton" href="map.html">G-MAP</a>
+
+            <script src="//maps.googleapis.com/maps/api/js?key=AIzaSyDgwuOI9Gv47b-W3aExbVodsXJrXEWwuko"></script>
+            <script type="text/javascript">
+                var gBut = document.getElementById('gokiButton');
+                gBut.addEventListener('click', GokiAjax, false);
+
+                function GokiAjax() {
+                    document.getElementById('sound').play();
+                    if (navigator.geolocation) {
+                        navigator.geolocation.getCurrentPosition(
+                            //第１引数
+                            function (position) {
+                                var data = position.coords;
+                                // データの整理
+                                var lat = data.latitude;
+                                var lng = data.longitude;
+                                var alt = data.altitude;
+                                var accLatlng = data.accuracy;
+                                var accAlt = data.altitudeAccuracy;
+                                var heading = data.heading;    		//0=北,90=東,180=南,270=西
+                                var speed = data.speed;
+
+                                alert( "緯度" + lat + ",経度" + lng + "にマッピングしました" ) ;
+                            },
+                            //第２引数
+                            function (error) {
+                                var errorMessage = {
+                                    0: "原因不明のエラー",
+                                    1: "拒否んな",
+                                    2: "電波悪いところでやるな",
+                                    3: "タイムアウトしたんご",
+                                };
+                                alert(errorMessage[error.code]);
+                            },
+                            //第３引数
+                            {
+                                "enableHighAccuracy": false,
+                                "timeout": 7000,
+                                "maximumAge": 2500,
+                            }
+
+                        );
+                    }
+                    else {
+                        alert("非対応の機種です");
+                    }
+                }
+            </script>
+        </div>
+    </div>
+    <audio id="sound">
+        <source src="./deta.mp3" type="audio/mp3" />
+    </audio>
+</body>
+
+</html>
